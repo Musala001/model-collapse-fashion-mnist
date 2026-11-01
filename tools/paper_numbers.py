@@ -313,6 +313,16 @@ def q3():
         add(f"q3.ddpm.replace.imb.ratio.{CLASSES[c]}", ratio[0][c], "{:.2f}", f"results/{RUN['ddpm']}/out/metrics/ddpm_replace_seed0.json")
 
 
+def probe_fids():
+    """Quick FID (probe_fid, 2000 samples) logged during generation-0 training of the trial and timing runs."""
+    for run, arch in [("mc-fmnist-smoke", "dcgan"), ("mc-fmnist-timing2", "vae"), ("mc-fmnist-timing2", "ddpm")]:
+        src = f"results/{run}/out/gen0/{arch}_seed0/train_log.json"
+        log = json.load(open(os.path.join(ROOT, src)))
+        for row in log:
+            if row.get("probe_fid") is not None:
+                add(f"probe[{run}].{arch}.epoch{row['epoch']}.fid", row["probe_fid"], "{:.1f}", src, "2000 samples")
+
+
 def pilot_best_val_acc(path):
     """Read 'best_val_acc' from a torch checkpoint's pickle without importing torch."""
     import io, pickletools, zipfile
@@ -641,6 +651,7 @@ def main():
     erasure_timing()
     param_counts()
     seed_mean_floors()
+    probe_fids()
     round2()
     logs()
     walls = [r["raw"] for r in rows if r["key"].startswith("log[") and r["key"].endswith(".wall_min") and r["raw"] is not None]

@@ -33,3 +33,7 @@ The runs used Kaggle notebooks with two T4 GPUs. To build a Kaggle script from a
 Each kernel downloads Fashion-MNIST through torchvision, trains the classifier, runs the lineages and writes
 `out/` (metrics JSON per lineage, timing logs, sample grids). The aggregation and report scripts read those outputs
 from `results/<kernel>/out/`, as laid out in the Kaggle dataset.
+
+## Licence
+
+MIT (see `LICENSE`).
