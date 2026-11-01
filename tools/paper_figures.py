@@ -37,8 +37,8 @@ RARE = [1, 3, 5, 7, 9]
 GENS = list(range(11))
 
 plt.rcParams.update({
-    "font.family": "DejaVu Sans", "font.size": 7, "axes.titlesize": 7.5, "axes.labelsize": 7,
-    "xtick.labelsize": 6.5, "ytick.labelsize": 6.5, "legend.fontsize": 7,
+    "font.family": "DejaVu Sans", "font.size": 8.5, "axes.titlesize": 9, "axes.labelsize": 8.5,
+    "xtick.labelsize": 8, "ytick.labelsize": 8, "legend.fontsize": 8,
     "axes.spines.top": False, "axes.spines.right": False, "axes.linewidth": 0.6,
     "axes.edgecolor": "#c3c2b7", "axes.labelcolor": INK2, "xtick.color": INK2, "ytick.color": INK2,
     "xtick.major.width": 0.6, "ytick.major.width": 0.6, "xtick.major.size": 2.5, "ytick.major.size": 2.5,
@@ -88,7 +88,7 @@ def fig_metrics(out):
     cols = [("fid", "FID (lower is better)"), ("recall", "Recall"), ("lpips", "LPIPS diversity"),
             ("rare_share", "Rare-class share")]
     rows = [("dcgan", "DCGAN, 3 seeds"), ("vae", "VAE, 3 seeds"), ("ddpm", "DDPM, 1 seed, replace only")]
-    fig, axes = plt.subplots(3, 4, figsize=(7.16, 4.55), sharex=True)
+    fig, axes = plt.subplots(3, 4, figsize=(7.16, 5.3), sharex=True)
     for r, (arch, rlabel) in enumerate(rows):
         loops = ["replace"] if arch == "ddpm" else LOOPS
         data = {l: lineages(RUN[arch], arch, l) for l in loops}
@@ -103,7 +103,8 @@ def fig_metrics(out):
             if r == 0:
                 ax.set_title(title)
             if c == 0:
-                ax.set_ylabel(rlabel, color=INK, fontsize=7, labelpad=3)
+                ax.set_ylabel(rlabel, color=INK, fontsize=8.5, labelpad=3)
+            ax.yaxis.set_major_locator(plt.MaxNLocator(4))
             gen_axis(ax, label=(r == 2))
     # shared y-limits within a column would hide the DCGAN detail, so each panel keeps its own scale
     handles = [Line2D([], [], color=STYLE[l][0], ls=STYLE[l][1], marker=STYLE[l][2], lw=1.1, ms=3,
@@ -141,9 +142,9 @@ def fig_samples(out):
             for s in ax.spines.values():
                 s.set_visible(False)
             if i == 0:
-                ax.set_title(f"Generation {g}", loc="center", fontsize=7)
+                ax.set_title(f"Generation {g}", loc="center", fontsize=8.5)
             if j == 0:
-                ax.set_ylabel(lab, rotation=0, ha="right", va="center", fontsize=6.5, color=INK, labelpad=3)
+                ax.set_ylabel(lab, rotation=0, ha="right", va="center", fontsize=8, color=INK, labelpad=3)
         if i in (3, 7):
             pass
     fig.savefig(os.path.join(out, "fig_samples.pdf"), dpi=300)
@@ -164,9 +165,9 @@ def fig_reliability(out):
               ("Fashion-MNIST, VAE", fm["vae"], "#2a78d6"),
               ("Fashion-MNIST, DCGAN", fm["dcgan"], "#1baf7a")]
     panels = [("clf_mean_conf", "Mean max-softmax confidence", "real_test_mean_conf"),
-              ("reject_frac", "Rejection fraction (confidence < 0.5)", "real_test_reject_frac"),
+              ("reject_frac", "Rejection fraction (conf. < 0.5)", "real_test_reject_frac"),
               ("clf_nn_agreement", "Nearest-neighbour agreement", "real_test_nn_agreement")]
-    fig, axes = plt.subplots(1, 3, figsize=(7.16, 1.95))
+    fig, axes = plt.subplots(1, 3, figsize=(7.16, 2.2))
     for ax, (key, title, rkey) in zip(axes, panels):
         for lab, data, col in series:
             for l in LOOPS:
@@ -185,7 +186,7 @@ def fig_reliability(out):
                 Line2D([], [], color=INK2, lw=0.7, ls=(0, (1, 1.5)), label="Fashion-MNIST real test images"),
                 Line2D([], [], color=MUTED, lw=0.8, ls=(0, (4, 2)), label="Chance (0.1)")]
     fig.legend(handles=handles, loc="upper center", ncol=4, frameon=False, bbox_to_anchor=(0.5, 1.17),
-               handlelength=2.4, columnspacing=1.2, fontsize=6.5)
+               handlelength=2.4, columnspacing=1.2, fontsize=8)
     fig.tight_layout(w_pad=1.0)
     fig.savefig(os.path.join(out, "fig_reliability.pdf"))
     plt.close(fig)
@@ -205,7 +206,7 @@ def fig_classes(out):
     short = {0: "T-shirt", 1: "Trouser", 2: "Pullover", 3: "Dress", 4: "Coat", 5: "Sandal", 6: "Shirt",
              7: "Sneaker", 8: "Bag", 9: "Ankle boot"}
     cap = 3.0
-    fig, axes = plt.subplots(1, 3, figsize=(7.16, 2.15), sharey=True)
+    fig, axes = plt.subplots(1, 3, figsize=(7.16, 2.6), sharey=True)
     x = np.arange(10)
     w = 0.38
     for ax, (arch, loop, title) in zip(axes, cases):
@@ -229,7 +230,7 @@ def fig_classes(out):
                     ax.plot(xs[:2], ys[:2], color=INK, lw=0.6, zorder=6)
                     ax.plot(xs[2:], ys[2:], color=INK, lw=0.6, zorder=6)
                     ax.annotate(f"{v:.1f}", (xi, cap), xytext=(0, 1), textcoords="offset points",
-                                ha="center", va="bottom", fontsize=5.5, color=INK)
+                                ha="center", va="bottom", fontsize=7.5, color=INK)
         ax.axhline(1.0, color=INK2, lw=0.7, ls=(0, (3, 2)), zorder=2)
         ax.set_xticks(x, [short[i] for i in order], rotation=50, ha="right", rotation_mode="anchor")
         ax.set_xlim(-0.6, 9.6)
@@ -237,14 +238,14 @@ def fig_classes(out):
         ax.set_yticks(np.arange(0, cap + 0.01, 0.5))
         ax.set_title(title)
         ax.grid(axis="x", visible=False)
-        ax.text(2.0, cap + 0.42, "rare group", ha="center", va="center", fontsize=6, color=INK2)
-        ax.text(7.0, cap + 0.42, "common group", ha="center", va="center", fontsize=6, color=INK2)
+        ax.text(2.0, cap + 0.42, "rare group", ha="center", va="center", fontsize=7.5, color=INK2)
+        ax.text(7.0, cap + 0.42, "common group", ha="center", va="center", fontsize=7.5, color=INK2)
     axes[0].set_ylabel("Share at gen 10 / real share")
     handles = [Patch(facecolor="#2a78d6", edgecolor="#2a78d6", label="Imbalanced real set (1000 / 200 per class)"),
                Patch(facecolor="white", edgecolor="#eb6834", hatch="//////", label="Balanced real set (600 per class)"),
                Line2D([], [], color=INK2, lw=0.7, ls=(0, (3, 2)), label="Keeps its real share (ratio 1)")]
     fig.legend(handles=handles, loc="upper center", ncol=3, frameon=False, bbox_to_anchor=(0.5, 1.08),
-               fontsize=6.5, handlelength=2.0)
+               fontsize=8, handlelength=2.0)
     fig.tight_layout(w_pad=0.8)
     fig.savefig(os.path.join(out, "fig_classes.pdf"))
     plt.close(fig)
