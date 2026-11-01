@@ -1,0 +1,15 @@
+{
+ "id": "musalandouvhada/mc-fmnist-dcgan-balanced-r1",
+ "title": "mc-fmnist-dcgan-balanced-r1",
+ "code_file": "run.py",
+ "language": "python",
+ "kernel_type": "script",
+ "is_private": true,
+ "enable_gpu": true,
+ "enable_internet": true,
+ "dataset_sources": [],
+ "competition_sources": [],
+ "kernel_sources": [
+  "musalandouvhada/mc-fmnist-dcgan-r1"
+ ]
+}

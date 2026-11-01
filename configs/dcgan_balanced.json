@@ -1,0 +1,46 @@
+{
+ "slug": "mc-fmnist-dcgan-balanced-r1",
+ "archs": [
+  "dcgan"
+ ],
+ "loops": [
+  "replace"
+ ],
+ "seeds": [
+  0,
+  1,
+  2
+ ],
+ "generations": 10,
+ "epochs": {
+  "dcgan": 80,
+  "vae": 80
+ },
+ "n_samples": 6000,
+ "mixture_real": 3000,
+ "clf_epochs": 15,
+ "grid_gens": [
+  0,
+  5,
+  10
+ ],
+ "probe_epochs": [],
+ "parallel_gpus": 2,
+ "time_budget_hours": 3.0,
+ "class_counts": [
+  600,
+  600,
+  600,
+  600,
+  600,
+  600,
+  600,
+  600,
+  600,
+  600
+ ],
+ "resume_slug": "mc-fmnist-dcgan-r1",
+ "resume_paths": [
+  "classifier"
+ ]
+}

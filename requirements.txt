@@ -1,0 +1,7 @@
+# Versions used on Kaggle: Python 3.13, torch 2.11.0+cu128 (2x Tesla T4)
+torch
+torchvision
+numpy
+matplotlib
+lpips
+pytorch-fid
